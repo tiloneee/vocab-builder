@@ -15,7 +15,7 @@
             <input type="text" readonly :value="word.english" />
         </div>
         <div class="actions">
-            <router-link :to="{ name: 'edit', params: { id: this.$route.params.id } }">
+            <router-link :to="{ name: 'edit', params: { wordId: this.$route.params.wordId } }">
                 Edit word
             </router-link>
         </div>

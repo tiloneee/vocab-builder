@@ -13,9 +13,9 @@
                 <td>{{ word.english }}</td>
                 <td>{{ word.german }}</td>
                 <td width="75" class="center aligned">
-                <router-link :to="{ name: 'show', params: { id: word._id }}">Show</router-link></td>
+                <router-link :to="{ name: 'show', params: { wordId: word._id }}">Show</router-link></td>
                 <td width="75" class="center aligned">
-                <router-link :to="{ name: 'edit', params: { id: word._id }}">Edit</router-link></td>
+                <router-link :to="{ name: 'edit', params: { wordId: word._id }}">Edit</router-link></td>
                 <td width="75" class="center aligned">Destroy</td>
             </tr>
         </table>

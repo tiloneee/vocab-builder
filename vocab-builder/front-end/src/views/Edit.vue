@@ -20,7 +20,7 @@ export default {
         };
     },
     async mounted() {
-        this.word = await api.getWord(this.$route.params.id);
+        this.word = await api.getWord(this.$route.params.wordId);
     },
     methods: {
         createOrUpdate: async function (word) {
