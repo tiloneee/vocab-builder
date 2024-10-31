@@ -26,7 +26,7 @@ export default {
         createOrUpdate: async function (word) {
             await api.updateWord(word);
             alert('Word updated!');
-            this.$router.push('/words/${word._id}');
+            this.$router.push(`/words/${word._id}`);
     }}
     
 };

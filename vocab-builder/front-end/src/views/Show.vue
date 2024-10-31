@@ -33,7 +33,8 @@ export default {
         };
     },
     async mounted() {
-        this.word = await api.getWord(this.$route.params.id);
+        this.word = await api.getWord(this.$route.params.wordId);
+        console.log(this.$route.params.wordId)
     }
 }
 </script>
