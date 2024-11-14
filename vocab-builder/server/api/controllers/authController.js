@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/authModel.js';
+import randToken from 'rand-token';
 
 export const login = async (req, res) => { 
     try {
@@ -9,11 +10,25 @@ export const login = async (req, res) => {
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return res.status(401).json({ message: 'Email or Password is incorrect' });
+    const accessTokenInfo = {
+        id: user._id,
+        name: user.name,
+    }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const accessToken = jwt.sign(accessTokenInfo, process.env.JWT_SECRET, { expiresIn: '15m' });
+    const refreshToken = randToken.generate(120);
+
     console.log("Logged user", user)
-    res.status(200).json({ token });
-} catch {
+    const outputJson = {
+        message: "Login Success",
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        name: user.name,
+        email: user.email
+    }
+
+    res.status(200).json(outputJson);
+} catch (error) {
     res.status(500).json({ error: error.message });
 }
 }
@@ -69,3 +84,7 @@ export const update_user = async (req, res) => {
     } catch { 
         res.status(500).json({ error: error.message });
     }}
+
+export const refresh = async (req, res) => {
+    
+}
