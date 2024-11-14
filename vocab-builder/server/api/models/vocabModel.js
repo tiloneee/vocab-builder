@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const VocabSchema = new Schema(
+const VocabSchema = new mongoose.Schema(
     {
         english: {
             type: String,
@@ -18,4 +18,4 @@ const VocabSchema = new Schema(
     }
 );
 
-module.exports = mongoose.model('Vocab', VocabSchema);
+export default mongoose.model('Vocab', VocabSchema);
