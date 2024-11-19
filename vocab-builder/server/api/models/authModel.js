@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+// import refresh from "../controllers/authController.js";
 
 const userSchema = new mongoose.Schema({ 
     name: {
@@ -14,6 +15,10 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    refreshToken: {
+        type: String,
+        default: "",
     },
     createdAt: {
         type: Date,

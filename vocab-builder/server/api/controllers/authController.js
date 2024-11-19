@@ -1,6 +1,20 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/authModel.js';
-import randToken from 'rand-token';
+
+const generateToken = (user) => { 
+    const accessToken = jwt.sign(
+        { id: user._id, name: user.name },
+        process.env.JWT_SECRET,
+        { expiresIn: '15m' }
+    );
+
+    const refreshToken = jwt.sign(
+        { id: user._id },
+        process.env.REFRESH_TOKEN_SECRET, // Use a separate secret for refresh tokens
+        { expiresIn: '7d' }
+    );
+    return { accessToken, refreshToken };
+}
 
 export const login = async (req, res) => { 
     try {
@@ -10,13 +24,10 @@ export const login = async (req, res) => {
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return res.status(401).json({ message: 'Email or Password is incorrect' });
-    const accessTokenInfo = {
-        id: user._id,
-        name: user.name,
-    }
 
-    const accessToken = jwt.sign(accessTokenInfo, process.env.JWT_SECRET, { expiresIn: '15m' });
-    const refreshToken = randToken.generate(120);
+    const { accessToken, refreshToken } = generateToken(user);
+    user.refreshToken = refreshToken;
+    await user.save();
 
     console.log("Logged user", user)
     const outputJson = {
@@ -85,6 +96,38 @@ export const update_user = async (req, res) => {
         res.status(500).json({ error: error.message });
     }}
 
-export const refresh = async (req, res) => {
+    export const refresh = async (req, res) => {
+        try {
+            const { refreshToken } = req.body;
+            if (!refreshToken) {
+                return res.status(400).json({ message: 'Refresh token is required' });
+            }
     
-}
+            // Verify the refresh token
+            jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
+                if (err) {
+                    return res.status(403).json({ message: 'Invalid or expired refresh token' });
+                }
+    
+                // Find the user associated with the refresh token
+                const user = await User.findOne({ _id: decoded.id, refreshToken });
+                if (!user) {
+                    return res.status(403).json({ message: 'User not authenticated' });
+                }
+    
+                // Generate a new access token
+                const newAccessToken = jwt.sign(
+                    { id: user._id, name: user.name },
+                    process.env.JWT_SECRET,
+                    { expiresIn: '15m' }
+                );
+    
+                res.status(200).json({
+                    message: "Token refreshed",
+                    accessToken: newAccessToken,
+                });
+            });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    };
