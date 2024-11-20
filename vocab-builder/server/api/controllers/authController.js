@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/authModel.js';
+import bcrypt from "bcryptjs";
+
 
 const generateToken = (user) => { 
     const accessToken = jwt.sign(
@@ -38,7 +40,7 @@ export const login = async (req, res) => {
 
 export const list_all_users = async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.find().select('-password');
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -60,7 +62,6 @@ export const create_user = async (req, res) => {
         res.status(201).json({
             message : `User with username ${req.body.email} created`
         });
-        console.log("New user created: ", newUser)
     } catch (error) {
         res.status(500).send(error);
 }};
@@ -79,21 +80,26 @@ export const delete_user = async (req, res) => {
 
 export const update_user = async (req, res) => {
     try {
-        const updatedUser = await User.findOneAndUpdate(req.params.userId, req.body, { new: true });
+        const { password, ...updateData } = req.body;
+        if (password) {
+            updateData.password = await bcrypt.hash(password, 10);
+        }
+
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: req.params.userId }, // Filter
+            updateData, // Update data
+            { new: true } // Return the updated document
+        ).select('-password');
+
         if (!updatedUser) {
-            res.status(400).send("No user");
+            return res.status(404).send("User not found");
         }
         res.status(200).json(updatedUser);
-    } catch { 
+    } catch (error) {
         res.status(500).json({ error: error.message });
-    }}
-
-
-    export const logout = async (req, res) => {
-        try {
-            // No server-side action needed since you're only using access tokens.
-            res.status(200).json({ message: 'Logout successful. Please clear the token on the client side.' });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
     }
+};
+
+
+
+
