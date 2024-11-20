@@ -90,5 +90,10 @@ export const update_user = async (req, res) => {
 
 
     export const logout = async (req, res) => {
-        
+        try {
+            // No server-side action needed since you're only using access tokens.
+            res.status(200).json({ message: 'Logout successful. Please clear the token on the client side.' });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     }
