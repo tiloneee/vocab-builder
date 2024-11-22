@@ -45,6 +45,8 @@ export default {
     },
     async mounted() {
         this.words = await api.getWords();
+        
+        
     }
 }
 </script>
