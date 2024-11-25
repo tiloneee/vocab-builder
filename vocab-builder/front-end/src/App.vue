@@ -12,6 +12,9 @@
           <router-link to="/test" class="item">
             <i class="graduation cap icon"></i> Test
           </router-link>
+          <router-link to="/translate" class="item">
+            <i class="language icon"></i> Translate
+          </router-link>
           <a @click="handleLogout" class="item">
             <i class="sign-out icon"></i> Sign Out
           </a>
@@ -78,6 +81,10 @@ export default {
 </script>
 
 <style>
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
 #app>div.navbar {
   margin-bottom: 1.5em;
 }

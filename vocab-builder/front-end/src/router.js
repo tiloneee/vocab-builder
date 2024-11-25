@@ -7,6 +7,7 @@ import Edit from './views/Edit.vue';
 import Test from './views/Test.vue';
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
+import Translate from './views/Translate.vue';
 
 Vue.use(Router);
 
@@ -51,6 +52,11 @@ export default new Router({
             path: '/register',
             name: 'register',
             component: Register
+        },
+        {
+            path: '/translate',
+            name: 'translate',
+            component: Translate
         }
     ]
 });

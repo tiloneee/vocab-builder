@@ -11,7 +11,6 @@ Vue.use(VueFlashMessage, {
         pauseOnInteract: true
     }
 });
-
 const getToken = () => localStorage.getItem("token");
 
 const addAuthHeader = (config) => {
@@ -25,6 +24,7 @@ const addAuthHeader = (config) => {
 const vm = new Vue();
 const wordsURL = "http://localhost:3000/words/";
 const authURL = "http://localhost:3000/auth/";
+const translateURL = "http://localhost:3000/translate/";
 
 const handleError = fn => (...params) =>
   fn(...params).catch(error => {
@@ -84,5 +84,40 @@ export const authAPI = {
         return res.data;
     })
 }
+
+export const translateAPI = { 
+    translate: async (text, sourceLang, targetLang) => { 
+        const config = { 
+            method: 'post', 
+            url: translateURL, 
+            data: { text, sourceLang, targetLang }, 
+            headers: {} 
+        }; 
+        addAuthHeader(config); 
+        const res = await axios(config); 
+        return res.data; 
+    },
+    getHistory: async () => {
+        const config = {
+            method: 'get',
+            url: translateURL + "history",
+            headers: {}
+        };
+        addAuthHeader(config);
+        const res = await axios(config);
+        return res.data;
+    },
+    deleteTranslation: async (id) => {
+        const config = {
+            method: 'delete',
+            url: translateURL + id,
+            headers: {}
+        };
+        addAuthHeader(config);
+        const res = await axios(config);
+        return res.data;
+    }
+}
+
 
 
