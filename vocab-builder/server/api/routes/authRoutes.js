@@ -7,15 +7,17 @@ const router = express.Router();
 router
     .route('/users')
     .get(verifyToken, userController.list_all_users)
-    .post(userController.create_user);
 router
     .route('/users/:userId')
     .post(verifyToken, userController.delete_user)
     .put(verifyToken, userController.update_user);
 
 router
-    .route('/login')
+    .route('/auth/login')
     .post(userController.login);
+router
+    .route('/auth/register')
+    .post(userController.register);
 
 
 

@@ -58,8 +58,6 @@ export default {
   methods: {
     async handleRegister() {
       try {
-        console.log("password", this.password);
-        console.log("confirm password", this.confirmPassword)
         if (this.password !== this.confirmPassword) {
           this.flash('Passwords do not match. Please try again.', 'error');
           return;

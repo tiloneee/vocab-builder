@@ -16,6 +16,7 @@ const generateToken = (user) => {
 export const login = async (req, res) => { 
     try {
     const {email, password} = req.body;
+    console.log("Request body: ", req.body)
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
@@ -46,7 +47,7 @@ export const list_all_users = async (req, res) => {
         res.status(500).json({ error: error.message });
     }}
 
-export const create_user = async (req, res) => { 
+export const register = async (req, res) => { 
     try { 
         console.log("Request body: ", req.body)
         const userExisted = await User.findOne({ email : req.body.email })
@@ -56,8 +57,7 @@ export const create_user = async (req, res) => {
             })
         }
         const newUser = new User(req.body);
-        console.log("123");
-        
+       
         await newUser.save();
         res.status(201).json({
             message : `User with username ${req.body.email} created`
