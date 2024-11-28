@@ -3,8 +3,9 @@ import App from './App.vue'
 import router from './router'
 import VueFlashMessage from 'vue-flash-message';
 import 'vue-flash-message/dist/vue-flash-message.min.css';
+import './assets/tailwind.css';
 
-import 'semantic-ui-css/semantic.css'
+
 
 Vue.config.productionTip = false
 

@@ -1,47 +1,55 @@
 <template>
   <div id="app">
-    <div class="ui inverted segment navbar" v-if="isLoggedIn">
-      <div class="ui center aligned container">
-        <div class="ui large secondary inverted pointing menu compact">
-          <router-link to="/words" exact class="item">
-            <i class="comment outline icon"></i> Words
+    <!-- Navbar for logged-in users -->
+    <div v-if="isLoggedIn" class="bg-gray-800 text-white py-4">
+      <div class="container mx-auto flex justify-center">
+        <div class="flex space-x-6">
+          <router-link to="/words" exact class="flex items-center space-x-2 text-gray-200 hover:text-white">
+            <i class="comment-outline-icon"></i>
+            <span>Words</span>
           </router-link>
-          <router-link to="/words/new" class="item">
-            <i class="plus circle icon"></i> New
+          <router-link to="/words/new" class="flex items-center space-x-2 text-gray-200 hover:text-white">
+            <i class="plus-circle-icon"></i>
+            <span>New</span>
           </router-link>
-          <router-link to="/test" class="item">
-            <i class="graduation cap icon"></i> Test
+          <router-link to="/test" class="flex items-center space-x-2 text-gray-200 hover:text-white">
+            <i class="graduation-cap-icon"></i>
+            <span>Test</span>
           </router-link>
-          <router-link to="/translate" class="item">
-            <i class="language icon"></i> Translate
+          <router-link to="/translate" class="flex items-center space-x-2 text-gray-200 hover:text-white">
+            <i class="language-icon"></i>
+            <span>Translate</span>
           </router-link>
-          <a @click="handleLogout" class="item">
-            <i class="sign-out icon"></i> Sign Out
+          <a @click="handleLogout" class="flex items-center space-x-2 text-gray-200 hover:text-white cursor-pointer">
+            <i class="sign-out-icon"></i>
+            <span>Sign Out</span>
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Other UI parts that should be shown when the user is not logged in -->
-    <div class="ui inverted segment navbar" v-else>
-      <div class="ui center aligned container">
-        <div class="ui large secondary inverted pointing menu compact">
-          <router-link to="/words" exact class="item">
-            <i class="comment outline icon"></i> Words
+    <!-- Navbar for non-logged-in users -->
+    <div v-else class="bg-gray-800 text-white py-4">
+      <div class="container mx-auto flex justify-center">
+        <div class="flex space-x-6">
+          <router-link to="/words" exact class="flex items-center space-x-2 text-gray-200 hover:text-white">
+            <i class="comment-outline-icon"></i>
+            <span>Words</span>
           </router-link>
-          <router-link to="/login" class="item">
-            <i class="sign in icon"></i> Login
+          <router-link to="/login" class="flex items-center space-x-2 text-gray-200 hover:text-white">
+            <i class="sign-in-icon"></i>
+            <span>Login</span>
           </router-link>
         </div>
       </div>
     </div>
 
-
-    <div class="ui text container">
+    <!-- Main content -->
+    <div class="container mx-auto mt-8">
       <flash-message class="myFlash"></flash-message>
-      <div class="ui one column grid">
-        <div class="column">
-          <router-view @login-success="handleLoginSuccess"/>
+      <div class="grid grid-cols-1">
+        <div>
+          <router-view @login-success="handleLoginSuccess" />
         </div>
       </div>
     </div>
@@ -50,67 +58,57 @@
 
 <script>
 export default {
-  name: 'app',
+  name: "app",
   data() {
     return {
-      isLoggedIn: false
-    }},
-    created() {
-      this.isLoggedIn = !!localStorage.getItem('token')
-    },
-   methods: {
+      isLoggedIn: false,
+    };
+  },
+  created() {
+    this.isLoggedIn = !!localStorage.getItem("token");
+  },
+  methods: {
     handleLogout() {
-  // Remove token from localStorage
-  localStorage.removeItem('token')
-  // Update the login state
-  this.isLoggedIn = false
-  // Redirect to login page
-  this.$router.push('/login')
-  // Optional: Show a logout message
-  if (this.$refs.flashMessage) {
-    this.$refs.flashMessage.flash('You have been logged out successfully', 'success')
-  }
-}, handleLoginSuccess() {
+      // Remove token from localStorage
+      localStorage.removeItem("token");
+      // Update the login state
+      this.isLoggedIn = false;
+      // Redirect to login page
+      this.$router.push("/login");
+      // Optional: Show a logout message
+      if (this.$refs.flashMessage) {
+        this.$refs.flashMessage.flash("You have been logged out successfully", "success");
+      }
+    },
+    handleLoginSuccess() {
       this.isLoggedIn = true;
-    
-    }
-  }
-
-
+    },
+  },
 };
 </script>
 
 <style>
-* {
-  font-family: 'Montserrat', sans-serif;
-}
-
-#app>div.navbar {
-  margin-bottom: 1.5em;
-}
-
 .myFlash {
   width: 250px;
   margin: 10px;
   position: absolute;
-  top: 50;
+  top: 12px;
   right: 0;
 }
 
 input {
-  width: 300px;
+  @apply w-72;
 }
 
 div.label {
-  width: 120px;
+  @apply w-32;
 }
 
 div.input {
-  margin-bottom: 10px;
+  @apply mb-2.5;
 }
 
-button.ui.button {
-  margin-top: 15px;
-  display: block;
+button {
+  @apply mt-4 block;
 }
 </style>
