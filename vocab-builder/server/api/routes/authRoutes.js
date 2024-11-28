@@ -9,6 +9,7 @@ router
     .get(verifyToken, userController.list_all_users)
 router
     .route('/users/:userId')
+    .get(verifyToken, userController.read_user)
     .post(verifyToken, userController.delete_user)
     .put(verifyToken, userController.update_user);
 

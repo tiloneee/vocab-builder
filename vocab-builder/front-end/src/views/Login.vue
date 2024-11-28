@@ -1,30 +1,45 @@
 <template>
-  <div class="ui segment">
-    <h2 class="ui header">Login</h2>
-    <form class="ui form" @submit.prevent="handleLogin">
-      <div class="field">
-        <label>Email</label>
+  <div class="max-w-md mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login</h2>
+    <form @submit.prevent="handleLogin">
+      <!-- Email Field -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
         <input
           type="email"
           v-model="email"
           placeholder="Enter your email"
           required
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
-      <div class="field">
-        <label>Password</label>
+
+      <!-- Password Field -->
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
         <input
           type="password"
           v-model="password"
           placeholder="Enter your password"
           required
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
-      
-      <div class="ui two buttons centered-button-group">
-        <button class="ui button primary" type="submit">Login</button>
-        <div class="or"></div>
-        <router-link to="/register" class="ui positive button">Create New Account</router-link>
+
+      <!-- Buttons -->
+      <div class="flex justify-between items-center">
+        <button
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Login
+        </button>
+        <router-link
+          to="/register"
+          class="text-blue-500 hover:text-blue-600 font-medium"
+        >
+          Create New Account
+        </router-link>
       </div>
     </form>
   </div>
@@ -32,8 +47,6 @@
 
 <script>
 import { authAPI } from '@/helpers/helpers';
-
-
 
 export default {
   data() {
@@ -44,35 +57,30 @@ export default {
   },
   methods: {
     async handleLogin() {
-  try {
-    const loginRequest = {
-      email: this.email,
-      password: this.password,
-    };
-    const response = await authAPI.login(loginRequest);
-
-
-    const { accessToken, name, email } = response;
-      
-    localStorage.setItem('token', accessToken);
-    this.$emit('login-success');
-    this.$router.push({ path: '/words' });
-    this.flash(`${name}, you are logged in!`, 'success');
-    console.log('Access Token:', localStorage.getItem('token'));
-    } catch (error) {
-    console.error('Login error:', error);
-    this.flash('Login failed. Please try again.', 'error');
-  }
-}
-,
+      try {
+        const loginRequest = {
+          email: this.email,
+          password: this.password,
+        };
+        const response = await authAPI.login(loginRequest);
+        console.log('Login response:', response);
+        const { accessToken, name, id } = response;
+        localStorage.setItem('token', accessToken);
+        localStorage.setItem('userId', id);
+        console.log('User ID:', localStorage.getItem('userId'));
+        this.$emit('login-success');
+        this.$router.push({ path: '/words' });
+        this.flash(`${name}, you are logged in!`, 'success');
+        console.log('Access Token:', localStorage.getItem('token'));
+      } catch (error) {
+        console.error('Login error:', error);
+        this.flash('Login failed. Please try again.', 'error');
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
-.ui.segment {
-  max-width: 400px;
-  margin: 2em auto;
-}
-
+/* Optional: Add margin to center the container */
 </style>
