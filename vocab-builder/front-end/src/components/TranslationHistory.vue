@@ -1,84 +1,95 @@
 <template>
-    <div class="ui segment">
-        <h3 class="ui header">Translation History</h3>
-        
-        <div v-if="translations.length === 0" class="ui placeholder segment">
-            <div class="ui icon header">
-                <i class="history icon"></i>
-                No translations yet
+    <div class="p-6 bg-white shadow-md rounded-lg">
+      <h3 class="text-lg font-bold text-gray-700 mb-4">Translation History</h3>
+  
+      <!-- Placeholder for Empty History -->
+      <div v-if="translations.length === 0" class="flex flex-col items-center text-gray-500 py-10">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-16 w-16 mb-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v16h16M4 4l16 16" />
+        </svg>
+        <p class="text-lg">No translations yet</p>
+      </div>
+  
+      <!-- Translation List -->
+      <div v-else class="space-y-4">
+        <div
+          v-for="translation in translations"
+          :key="translation._id"
+          class="flex justify-between items-center border-b pb-3 last:border-none"
+        >
+          <div>
+            <div class="font-semibold text-gray-700">From: {{ translation.originalText }}</div>
+            <div class="text-gray-600">To: {{ translation.translatedText }}</div>
+            <div class="text-sm text-gray-500">
+              {{ getLanguageName(translation.sourceLang) }} → {{ getLanguageName(translation.targetLang) }}
             </div>
+            <div class="text-sm text-gray-400">{{ formatDate(translation.createdAt) }}</div>
+          </div>
+          <button
+            @click="$emit('delete', translation._id)"
+            class="p-2 rounded-full bg-red-100 hover:bg-red-200 text-red-600 focus:outline-none focus:ring focus:ring-red-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-7 7-7-7" />
+            </svg>
+          </button>
         </div>
-        
-        <div v-else class="ui relaxed divided list">
-            <div v-for="translation in translations" :key="translation._id" class="item">
-                <div class="right floated content">
-                    <button @click="$emit('delete', translation._id)" class="ui mini negative icon button">
-                        <i class="trash icon"></i>
-                    </button>
-                </div>
-                
-                <div class="content">
-                    <div class="header">From: {{ translation.originalText }}</div>
-                    <div class="description">To: {{ translation.translatedText }}</div>
-                    <div class="meta">
-                        <span>{{ getLanguageName(translation.sourceLang) }} → {{ getLanguageName(translation.targetLang) }}</span>
-                    </div>
-                    <div class="meta">
-                        <span class="date"> {{ formatDate(translation.createdAt) }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-</template>
-
-<style>
-.ui.segment {
-    display: flex;
-    margin-top: 20px;
-    width: 100%;
-    flex-direction: column;
-    margin-bottom: 20px;
-}
-</style>
-
-<script>
-import { LANGUAGES } from '@/constants/languages';
-
-export default {
+  </template>
+  
+  <script>
+  import { LANGUAGES } from '@/constants/languages';
+  
+  export default {
     name: 'TranslationHistory',
-    
     props: {
-        translations: {
-            type: Array,
-            required: true
-        }
+      translations: {
+        type: Array,
+        required: true,
+      },
     },
-    
     setup() {
-        const languageMap = LANGUAGES.reduce((acc, lang) => {
-            acc[lang.code] = lang.name;
-            return acc;
-        }, {});
-
-        const formatDate = (date) => {
-            return new Date(date).toLocaleDateString(undefined, {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        };
-
-        const getLanguageName = (langCode) => {
-            return languageMap[langCode] || langCode;
-        };
-
-        return {
-            formatDate,
-            getLanguageName
-        };
-    }
-}
-</script>
+      const languageMap = LANGUAGES.reduce((acc, lang) => {
+        acc[lang.code] = lang.name;
+        return acc;
+      }, {});
+  
+      const formatDate = (date) => {
+        return new Date(date).toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+      };
+  
+      const getLanguageName = (langCode) => {
+        return languageMap[langCode] || langCode;
+      };
+  
+      return {
+        formatDate,
+        getLanguageName,
+      };
+    },
+  };
+  </script>
+  
+  <style scoped>
+  /* Optional custom styles */
+  </style>
+  

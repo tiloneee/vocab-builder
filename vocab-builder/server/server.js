@@ -5,6 +5,7 @@ import Vocab from './api/models/vocabModel.js'; // Ensure the file extension is 
 import vocabRoutes from './api/routes/vocabRoutes.js';
 import authRoutes from './api/routes/authRoutes.js';
 import connection from './api/mongo/connect.js'
+import translateRoute from './api/routes/translateRoutes.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 
 app.use('/', vocabRoutes);
 app.use('/', authRoutes);
+app.use('/', translateRoute);
 
 connection()
     .then(() => {

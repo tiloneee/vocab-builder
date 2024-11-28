@@ -6,11 +6,32 @@ export const verifyToken = (req, res, next) => {
 
     if (!token) return res.status(403).json({ message: 'No token provided' });
     try {
-        jwt.verify(token, process.env.JWT_SECRET);
-
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = {
+            _id: decoded.userId,
+            email: decoded.email,
+            role: decoded.role
+        };
         next();
     } catch (error) {
-        console.error(error);
-        return res.status(403).json({ message: 'Unauthorized' });
+        console.error('Auth Middleware Error:', error);
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                success: false,
+                message: 'Token has expired'
+            });
+        }
+
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid token'
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: 'Authentication failed'
+        });
     }
 }
