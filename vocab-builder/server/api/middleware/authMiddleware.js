@@ -8,9 +8,8 @@ export const verifyToken = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = {
-            _id: decoded.userId,
+            _id: decoded.id,
             email: decoded.email,
-            role: decoded.role
         };
         next();
     } catch (error) {

@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import VueFlashMessage from 'vue-flash-message';
 import 'vue-flash-message/dist/vue-flash-message.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import './assets/tailwind.css';
 
 

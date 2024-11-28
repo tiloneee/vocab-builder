@@ -63,9 +63,11 @@ export default {
           password: this.password,
         };
         const response = await authAPI.login(loginRequest);
-
-        const { accessToken, name } = response;
+        console.log('Login response:', response);
+        const { accessToken, name, id } = response;
         localStorage.setItem('token', accessToken);
+        localStorage.setItem('userId', id);
+        console.log('User ID:', localStorage.getItem('userId'));
         this.$emit('login-success');
         this.$router.push({ path: '/words' });
         this.flash(`${name}, you are logged in!`, 'success');

@@ -8,6 +8,7 @@ import Test from './views/Test.vue';
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 import Translate from './views/Translate.vue';
+import Profile from './views/Profile.vue';
 
 Vue.use(Router);
 
@@ -57,6 +58,11 @@ export default new Router({
             path: '/translate',
             name: 'translate',
             component: Translate
+        },
+        {
+            path: '/profile/:userId',
+            name: 'profile',
+            component: Profile,
         }
     ]
 });

@@ -20,6 +20,11 @@
             <i class="language-icon"></i>
             <span>Translate</span>
           </router-link>
+          <router-link :to="{ name: 'profile', params: { userId: this.userId } }"
+            class="flex items-center space-x-2 text-gray-200 hover:text-white">
+            <i class="user-icon"></i>
+            <span>Profile</span>
+          </router-link>
           <a @click="handleLogout" class="flex items-center space-x-2 text-gray-200 hover:text-white cursor-pointer">
             <i class="sign-out-icon"></i>
             <span>Sign Out</span>
@@ -46,7 +51,7 @@
 
     <!-- Main content -->
     <div class="container mx-auto mt-8">
-      <flash-message class="myFlash"></flash-message>
+      <flash-message class="fixed top-12 right-0 w-64 z-50"></flash-message>
       <div class="grid grid-cols-1">
         <div>
           <router-view @login-success="handleLoginSuccess" />
@@ -57,20 +62,29 @@
 </template>
 
 <script>
+import router from './router';
+import { userAPI } from './helpers/helpers';
+
 export default {
   name: "app",
   data() {
     return {
       isLoggedIn: false,
+      userId: null,
     };
   },
-  created() {
+  async created() {
     this.isLoggedIn = !!localStorage.getItem("token");
+    if (this.isLoggedIn) {
+        this.userId = localStorage.getItem("userId");
+    }
+    
   },
   methods: {
     handleLogout() {
       // Remove token from localStorage
       localStorage.removeItem("token");
+      localStorage.removeItem("userId");
       // Update the login state
       this.isLoggedIn = false;
       // Redirect to login page
@@ -82,7 +96,8 @@ export default {
     },
     handleLoginSuccess() {
       this.isLoggedIn = true;
-    },
+    }, 
+    
   },
 };
 </script>

@@ -1,7 +1,8 @@
 <template>
-    <div>
-        <h1>Edit Word</h1>
-        <word-form @createOrUpdate="createOrUpdate" :word=this.word></word-form>
+    <div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+      <h1 class="text-3xl font-semibold mb-6 text-center">Edit Word</h1>
+      <!-- WordForm Component -->
+      <word-form @createOrUpdate="createOrUpdate" :word=this.word></word-form>
     </div>
 </template>
 

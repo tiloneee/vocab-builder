@@ -25,6 +25,7 @@ const vm = new Vue();
 const wordsURL = "http://localhost:3000/words/";
 const authURL = "http://localhost:3000/auth/";
 const translateURL = "http://localhost:3000/translate/";
+const userURL = "http://localhost:3000/users/";
 
 const handleError = fn => (...params) =>
   fn(...params).catch(error => {
@@ -110,12 +111,57 @@ export const translateAPI = {
     deleteTranslation: async (id) => {
         const config = {
             method: 'delete',
-            url: translateURL + id,
+            url: "http://localhost:3000/translation/" + id,
             headers: {}
         };
         addAuthHeader(config);
         const res = await axios(config);
         return res.data;
+    }
+}
+
+export const userAPI = { 
+    getUsers: async () => { 
+        const config = { 
+            method: 'get', 
+            url: userURL, 
+            headers: {} 
+        }; 
+        addAuthHeader(config); 
+        const res = await axios(config); 
+        return res.data; 
+    }, 
+    getUser: async (id) => { 
+        const config = { 
+            method: 'get', 
+            url: userURL + id, 
+            headers: {} 
+        }; 
+        addAuthHeader(config); 
+        console.log(config);
+        const res = await axios(config); 
+        return res.data; 
+    }, 
+    deleteUser: async (id) => { 
+        const config = { 
+            method: 'delete', 
+            url: userURL + id, 
+            headers: {} 
+        }; 
+        addAuthHeader(config); 
+        const res = await axios(config); 
+        return res.data; 
+    }, 
+    updateUser: async (payload) => { 
+        const config = { 
+            method: 'put', 
+            url: userURL + payload._id, 
+            data: payload, 
+            headers: {} 
+        }; 
+        addAuthHeader(config); 
+        const res = await axios(config); 
+        return res.data; 
     }
 }
 
