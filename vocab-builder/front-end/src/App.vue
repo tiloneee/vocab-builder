@@ -96,6 +96,7 @@ export default {
     },
     handleLoginSuccess() {
       this.isLoggedIn = true;
+      this.userId = localStorage.getItem("userId");
     }, 
     
   },

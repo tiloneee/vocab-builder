@@ -19,6 +19,7 @@
   
       <div class="mt-6">
         <router-link
+          v-if="isLoggedIn"
           :to="{ name: 'edit', params: { wordId: this.$route.params.wordId } }"
           class="block text-center text-blue-500 underline"
         >
@@ -35,11 +36,15 @@
     name: 'show',
     data() {
       return {
-        word: {}
+        word: {},
+        isLoggedIn: false
       };
     },
     async mounted() {
       this.word = await api.getWord(this.$route.params.wordId);
+    },
+    created() {
+      this.isLoggedIn = !!localStorage.getItem('token');
     }
   }
   </script>

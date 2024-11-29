@@ -162,6 +162,24 @@ export const userAPI = {
         addAuthHeader(config); 
         const res = await axios(config); 
         return res.data; 
+    },
+    uploadAvatar: async (userId, file) => {
+        const formData = new FormData();
+        formData.append("avatar", file);
+
+        const config = {
+            method: "post",
+            url: `${userURL}${userId}/avatar`,
+            data: formData,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        };
+
+        addAuthHeader(config);
+
+        const res = await axios(config);
+        return res.data; // This will return the updated avatar URL
     }
 }
 

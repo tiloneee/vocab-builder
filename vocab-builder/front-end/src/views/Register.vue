@@ -76,10 +76,20 @@ export default {
     };
   },
   methods: {
+    isPasswordValid(password) {
+      if (password.length < 8) {
+        return false;
+      };
+      return true;
+    },  
     async handleRegister() {
       try {
         if (this.password !== this.confirmPassword) {
-          this.flash('Passwords do not match. Please try again.', 'error');
+          console.log('Passwords do not match. Please try again.', 'error');
+          return;
+        }
+        if (!this.isPasswordValid(this.password)) {
+          console.log('Password must be at least 8 characters long.', 'error');
           return;
         }
         const registerRequest = {
@@ -89,7 +99,7 @@ export default {
         };
         await authAPI.register(registerRequest);
         this.$router.push({ path: '/login' });
-        this.flash('Registration successful! Please login.', 'success');
+        console.log('Registration successful! Please login.', 'success');
       } catch (error) {
         console.error('Registration error:', error);
         this.flash('Registration failed. Please try again.', 'error');
