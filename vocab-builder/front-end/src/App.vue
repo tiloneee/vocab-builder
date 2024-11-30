@@ -28,17 +28,33 @@
           </router-link>
         </div>
 
-        <!-- Right: Profile and Logout -->
-        <div class="flex-none flex space-x-6">
-          <router-link :to="{ name: 'profile', params: { userId: this.userId } }"
-            class="flex items-center space-x-2 text-gray-200 hover:text-white">
-            <i class="user-icon"></i>
-            <span>Profile</span>
-          </router-link>
-          <a @click="handleLogout" class="flex items-center space-x-2 text-gray-200 hover:text-white cursor-pointer">
-            <i class="sign-out-icon"></i>
-            <span>Sign Out</span>
-          </a>
+        <!-- Right: Avatar Dropdown -->
+        <div class="relative flex-none">
+          <button @click="toggleDropdown" class="w-10 h-10 rounded-full overflow-hidden border-1 border-gray-300 focus:outline-blue-500 focus:outline-2 focus:ring-2 focus:ring-blue-500"">
+            <img :src="userAvatar" class="w-full h-full object-cover"  alt="User Avatar" />
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div v-if="isDropdownOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+            <ul class="py-1 text-gray-700">
+              <li>
+                <router-link 
+                  @click="toggleDropdown"
+                  :to="{ name: 'profile', params: { userId: userId } }" 
+                  class="block px-4 py-2 hover:bg-gray-100" 
+                  >
+                  Profile
+                </router-link>
+              </li>
+              <li>
+                <button 
+                  @click="handleLogout" 
+                  class="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                  Sign Out
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -73,7 +89,7 @@
     <div class="container mx-auto mt-8">
       <div class="grid grid-cols-1">
         <div>
-          <router-view @login-success="handleLoginSuccess" />
+          <router-view @login-success="handleLoginSuccess"  @avatar-updated="getUpdatedAvatar" />
         </div>
       </div>
     </div>
@@ -83,68 +99,77 @@
 
 
 
-<script>
-import router from './router';
-import { userAPI } from './helpers/helpers';
 
+
+<script>
+import { userAPI } from './helpers/helpers';
 export default {
-  name: "app",
+  name: "App",
   data() {
     return {
       isLoggedIn: false,
+      isDropdownOpen: false,
       userId: null,
+      user: {},
+      backendUrl: "http://localhost:3000",
+      userAvatar: "",
     };
   },
-  async created() {
+  methods: {
+    handleLogout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+      this.isLoggedIn = false;
+      this.$toast.success("You are logged out", "success"); 
+      this.$router.push("/login");
+
+    },
+    getUpdatedAvatar() {
+      this.handleLoginSuccess();
+    },  
+    async handleLoginSuccess() {
+    this.isLoggedIn = true;
+    console.log("handleLoginSuccess");
+    this.userId = localStorage.getItem("userId");
+    const userId = this.userId;
+    const user = await userAPI.getUser(userId);
+    this.user = user;
+    this.userAvatar = `${this.backendUrl}${this.user.avatar}`;
+    },
+    toggleDropdown() {
+      this.isDropdownOpen = !this.isDropdownOpen;
+    },
+    closeDropdown() {
+      this.isDropdownOpen = false;
+    },
+    handleOutsideClick(event) {
+      const dropdown = this.$el.querySelector(".relative");
+      if (dropdown && !dropdown.contains(event.target)) {
+        this.closeDropdown();
+      }
+    },
+  },
+  created() {
     this.isLoggedIn = !!localStorage.getItem("token");
     if (this.isLoggedIn) {
-        this.userId = localStorage.getItem("userId");
+      this.userId = localStorage.getItem("userId");
+      this.handleLoginSuccess();
     }
-    
+    document.addEventListener("click", this.handleOutsideClick);
   },
-  methods: {
-  handleLogout() {
-    // Remove token from localStorage
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-
-    // Update the login state
-    this.isLoggedIn = false;
-
-    // Redirect to login page
-    this.$router.push("/login");
-
-    // Show a logout message
-    this.$toast.success("You have been logged out successfully!");
+  beforeDestroy() {
+    document.removeEventListener("click", this.handleOutsideClick);
   },
-  handleLoginSuccess() {
-    this.isLoggedIn = true;
-    this.userId = localStorage.getItem("userId");
-  },
-},
-
 };
 </script>
 
+
+
+
+
 <style>
-.myFlash {
-  width: 250px;
-  margin: 10px;
-  position: absolute;
-  top: 12px;
-  right: 0;
-}
-
-input {
-  @apply w-72;
-}
-
-div.label {
-  @apply w-32;
-}
-
-div.input {
-  @apply mb-2.5;
+img {
+  border-radius: 50%;
 }
 
 button {

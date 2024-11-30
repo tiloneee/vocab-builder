@@ -119,6 +119,7 @@ export default {
         try {
           const updatedUser = await userAPI.uploadAvatar(this.user._id, file);
           this.user.avatar = updatedUser.avatar;
+          this.$emit('avatar-updated');
           this.$toast.success('Avatar updated successfully', 'success');
         } catch (error) {
           console.error("Error uploading avatar:", error);
