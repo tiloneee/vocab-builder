@@ -12,6 +12,10 @@ const generateToken = (user) => {
     return accessToken;
 }
 
+export const checkToken = async (req, res) => { 
+    res.status(200).json({ message: 'Pong' });
+}
+
 export const login = async (req, res) => { 
     try {
     const {email, password} = req.body;

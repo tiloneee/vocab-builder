@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- Navbar for logged-in users -->
-    <div v-if="isLoggedIn" class="bg-gray-800 text-white py-4">
+    <div v-if="isLoggedIn" class="bg-gray-900 text-white py-4">
       <div class="container mx-auto flex items-center">
         <!-- Left: Logo -->
         <router-link to="/" class="flex items-center text-gray-200 hover:text-white space-x-2 flex-none">
@@ -9,7 +9,7 @@
         </router-link>
 
         <!-- Center: Navigation Links -->
-        <div class="flex-grow flex justify-center space-x-6">
+        <div class="flex-grow flex justify-center space-x-10 font-medium">
           <router-link to="/words" exact class="flex items-center space-x-2 text-gray-200 hover:text-white">
             <i class="comment-outline-icon"></i>
             <span>Words</span>
@@ -35,11 +35,10 @@
           </button>
 
           <!-- Dropdown Menu -->
-          <div v-if="isDropdownOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+          <div v-if="isDropdownOpen" @click="toggleDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
             <ul class="py-1 text-gray-700">
               <li>
                 <router-link 
-                  @click="toggleDropdown"
                   :to="{ name: 'profile', params: { userId: userId } }" 
                   class="block px-4 py-2 hover:bg-gray-100" 
                   >
@@ -102,7 +101,7 @@
 
 
 <script>
-import { userAPI } from './helpers/helpers';
+import { userAPI, authAPI } from './helpers/helpers';
 export default {
   name: "App",
   data() {
@@ -160,6 +159,16 @@ export default {
   beforeDestroy() {
     document.removeEventListener("click", this.handleOutsideClick);
   },
+  async mounted() {
+    const res = await authAPI.checkToken();
+    console.log(res);
+      if (res.status === 403) {
+        this.isLoggedIn = false;
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        this.$router.push("/login");
+      }
+  }
 };
 </script>
 
