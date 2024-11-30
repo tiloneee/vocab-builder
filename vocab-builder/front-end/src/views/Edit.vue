@@ -26,7 +26,7 @@ export default {
     methods: {
         createOrUpdate: async function (word) {
             await api.updateWord(word);
-            this.flash('Word updated successfully', 'success');
+            this.$toast.success('Word updated successfully', 'success');
             this.$router.push(`/words/${word._id}`);
     }}
     

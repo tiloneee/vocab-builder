@@ -63,18 +63,15 @@ export default {
           password: this.password,
         };
         const response = await authAPI.login(loginRequest);
-        console.log('Login response:', response);
         const { accessToken, name, id } = response;
         localStorage.setItem('token', accessToken);
         localStorage.setItem('userId', id);
-        console.log('User ID:', localStorage.getItem('userId'));
         this.$emit('login-success');
         this.$router.push({ path: '/words' });
-        this.flash(`${name}, you are logged in!`, 'success');
-        console.log('Access Token:', localStorage.getItem('token'));
+        this.$toast.success(`${name}, you are logged in!`, 'success');
       } catch (error) {
         console.error('Login error:', error);
-        this.flash('Login failed. Please try again.', 'error');
+        this.$toast.error('Login failed. Please try again.', 'error');
       }
     },
   },

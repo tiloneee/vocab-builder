@@ -1,20 +1,17 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import VueFlashMessage from 'vue-flash-message';
-import 'vue-flash-message/dist/vue-flash-message.min.css';
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './assets/tailwind.css';
 
-
-
 Vue.config.productionTip = false
 
-Vue.use(VueFlashMessage, {
-  messageOptions: {
-    timeout: 3000,
-    pauseOnInteract: true,
-  },
+Vue.use(Toast, {
+  timeout: 3000,
+  pauseOnFocusLoss: true,
+  pauseOnHover: true,
 });
 
 new Vue({

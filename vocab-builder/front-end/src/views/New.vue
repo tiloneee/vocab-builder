@@ -18,7 +18,7 @@
     methods: {
       createOrUpdate: async function (word) {
         const res = await api.createWord(word); 
-        this.flash('Word created', 'success'); 
+        this.$toast.success('Word created', 'success'); 
         this.$router.push(`/words/${res._id}`);
       }
     }

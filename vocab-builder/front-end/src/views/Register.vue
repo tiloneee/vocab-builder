@@ -85,11 +85,11 @@ export default {
     async handleRegister() {
       try {
         if (this.password !== this.confirmPassword) {
-          console.log('Passwords do not match. Please try again.', 'error');
+          this.$toast.error('Passwords do not match. Please try again.', 'error');
           return;
         }
         if (!this.isPasswordValid(this.password)) {
-          console.log('Password must be at least 8 characters long.', 'error');
+          this.$toast.error('Password must be at least 8 characters long.', 'error');
           return;
         }
         const registerRequest = {
@@ -99,10 +99,9 @@ export default {
         };
         await authAPI.register(registerRequest);
         this.$router.push({ path: '/login' });
-        console.log('Registration successful! Please login.', 'success');
+        this.$toast.success('Registration successful! Please login.', 'success');
       } catch (error) {
-        console.error('Registration error:', error);
-        this.flash('Registration failed. Please try again.', 'error');
+        this.$toast.error('Registration failed. Please try again.', 'error');
       }
     },
   },

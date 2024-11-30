@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/authModel.js';
+import User from '../models/userModel.js';
 import bcrypt from "bcryptjs";
-
 
 const generateToken = (user) => { 
     const accessToken = jwt.sign(
@@ -40,28 +39,6 @@ export const login = async (req, res) => {
 }
 }
 
-export const read_user = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.userId).select('-password');
-        
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        
-        res.status(200).json(user);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-}
-
-export const list_all_users = async (req, res) => {
-    try {
-        const users = await User.find().select('-password');
-        res.status(200).json(users);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }}
-
 export const register = async (req, res) => { 
     try { 
         console.log("Request body: ", req.body)
@@ -81,39 +58,9 @@ export const register = async (req, res) => {
         res.status(500).send(error);
 }};
 
-export const delete_user = async (req, res) => {
-    try {
-        const user = await User.findByIdAndDelete(req.params.userId);
-        if (!user) {
-            res.status(400).send("No user");   
-        }
-        res.status(200).json(user);
-    } catch {
-        res.status(500).send(error);
-    }
-}
 
-export const update_user = async (req, res) => {
-    try {
-        const { password, ...updateData } = req.body;
-        if (password) {
-            updateData.password = await bcrypt.hash(password, 10);
-        }
 
-        const updatedUser = await User.findOneAndUpdate(
-            { _id: req.params.userId }, // Filter
-            updateData, // Update data
-            { new: true } // Return the updated document
-        ).select('-password');
 
-        if (!updatedUser) {
-            return res.status(404).send("User not found");
-        }
-        res.status(200).json(updatedUser);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
 
 
 

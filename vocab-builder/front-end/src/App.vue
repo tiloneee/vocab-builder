@@ -2,8 +2,14 @@
   <div id="app">
     <!-- Navbar for logged-in users -->
     <div v-if="isLoggedIn" class="bg-gray-800 text-white py-4">
-      <div class="container mx-auto flex justify-center">
-        <div class="flex space-x-6">
+      <div class="container mx-auto flex items-center">
+        <!-- Left: Logo -->
+        <router-link to="/" class="flex items-center text-gray-200 hover:text-white space-x-2 flex-none">
+          <span class="text-xl font-bold">Vocab Builder</span>
+        </router-link>
+
+        <!-- Center: Navigation Links -->
+        <div class="flex-grow flex justify-center space-x-6">
           <router-link to="/words" exact class="flex items-center space-x-2 text-gray-200 hover:text-white">
             <i class="comment-outline-icon"></i>
             <span>Words</span>
@@ -20,6 +26,10 @@
             <i class="language-icon"></i>
             <span>Translate</span>
           </router-link>
+        </div>
+
+        <!-- Right: Profile and Logout -->
+        <div class="flex-none flex space-x-6">
           <router-link :to="{ name: 'profile', params: { userId: this.userId } }"
             class="flex items-center space-x-2 text-gray-200 hover:text-white">
             <i class="user-icon"></i>
@@ -35,12 +45,22 @@
 
     <!-- Navbar for non-logged-in users -->
     <div v-else class="bg-gray-800 text-white py-4">
-      <div class="container mx-auto flex justify-center">
-        <div class="flex space-x-6">
+      <div class="container mx-auto flex items-center">
+        <!-- Left: Logo -->
+        <router-link to="/" class="flex items-center text-gray-200 hover:text-white space-x-2 flex-none">
+          <span class="text-xl font-bold">Vocab Builder</span>
+        </router-link>
+
+        <!-- Center: Navigation Links -->
+        <div class="flex-grow flex justify-center space-x-6">
           <router-link to="/words" exact class="flex items-center space-x-2 text-gray-200 hover:text-white">
             <i class="comment-outline-icon"></i>
             <span>Words</span>
           </router-link>
+        </div>
+
+        <!-- Right: Login -->
+        <div class="flex-none">
           <router-link to="/login" class="flex items-center space-x-2 text-gray-200 hover:text-white">
             <i class="sign-in-icon"></i>
             <span>Login</span>
@@ -51,7 +71,6 @@
 
     <!-- Main content -->
     <div class="container mx-auto mt-8">
-      <flash-message class="fixed top-12 right-0 w-64 z-50"></flash-message>
       <div class="grid grid-cols-1">
         <div>
           <router-view @login-success="handleLoginSuccess" />
@@ -60,6 +79,9 @@
     </div>
   </div>
 </template>
+
+
+
 
 <script>
 import router from './router';
@@ -81,25 +103,26 @@ export default {
     
   },
   methods: {
-    handleLogout() {
-      // Remove token from localStorage
-      localStorage.removeItem("token");
-      localStorage.removeItem("userId");
-      // Update the login state
-      this.isLoggedIn = false;
-      // Redirect to login page
-      this.$router.push("/login");
-      // Optional: Show a logout message
-      if (this.$refs.flashMessage) {
-        this.$refs.flashMessage.flash("You have been logged out successfully", "success");
-      }
-    },
-    handleLoginSuccess() {
-      this.isLoggedIn = true;
-      this.userId = localStorage.getItem("userId");
-    }, 
-    
+  handleLogout() {
+    // Remove token from localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+
+    // Update the login state
+    this.isLoggedIn = false;
+
+    // Redirect to login page
+    this.$router.push("/login");
+
+    // Show a logout message
+    this.$toast.success("You have been logged out successfully!");
   },
+  handleLoginSuccess() {
+    this.isLoggedIn = true;
+    this.userId = localStorage.getItem("userId");
+  },
+},
+
 };
 </script>
 

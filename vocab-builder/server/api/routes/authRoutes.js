@@ -1,24 +1,14 @@
 import express from 'express';
-import * as userController from '../controllers/authController.js';
-import { verifyToken } from '../middleware/authMiddleware.js';
+import * as authController from '../controllers/authController.js';
 
 const router = express.Router();
 
 router
-    .route('/users')
-    .get(verifyToken, userController.list_all_users)
+    .route('/login')
+    .post(authController.login);
 router
-    .route('/users/:userId')
-    .get(verifyToken, userController.read_user)
-    .post(verifyToken, userController.delete_user)
-    .put(verifyToken, userController.update_user);
-
-router
-    .route('/auth/login')
-    .post(userController.login);
-router
-    .route('/auth/register')
-    .post(userController.register);
+    .route('/register')
+    .post(authController.register);
 
 
 

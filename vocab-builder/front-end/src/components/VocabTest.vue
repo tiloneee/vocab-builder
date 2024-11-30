@@ -53,10 +53,10 @@
     methods: {
       onSubmit: function() {
         if (this.english === this.currWord.english) {
-          this.flash('Correct!', 'success', { timeout: 1000 });
+          this.$toast.success('Correct!', 'success', { timeout: 1000 });
           this.score += 1;
         } else {
-          this.flash('Wrong!', 'error', { timeout: 1000 });
+          this.$toast.error('Wrong!', 'error', { timeout: 1000 });
           this.incorrectGuesses.push(this.currWord.german);
         }
   

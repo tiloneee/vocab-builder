@@ -63,7 +63,7 @@
         const sure = window.confirm('Are you sure you want to delete this word?');
         if (!sure) return;
         await api.deleteWord(id);
-        // this.flash('Word deleted', 'success');
+        this.$toast.success('Word deleted', 'success');
         const newWords = this.words.filter(word => word._id !== id);
         this.words = newWords;
       }
