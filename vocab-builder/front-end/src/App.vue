@@ -30,7 +30,7 @@
 
         <!-- Right: Avatar Dropdown -->
         <div class="relative flex-none">
-          <button @click="toggleDropdown" class="w-10 h-10 rounded-full overflow-hidden border-1 border-gray-300 focus:outline-blue-500 focus:outline-2 focus:ring-2 focus:ring-blue-500"">
+          <button @click="toggleDropdown" class="w-10 h-10 rounded-full overflow-hidden border border-gray-100 focus:outline-blue-500 focus:outline-2 focus:ring-2 focus:ring-blue-500"">
             <img :src="userAvatar" class="w-full h-full object-cover"  alt="User Avatar" />
           </button>
 
