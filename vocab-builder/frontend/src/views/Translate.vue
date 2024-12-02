@@ -148,7 +148,9 @@
             formData.value.originalText,
             formData.value.sourceLang,
             formData.value.targetLang
+            
           );
+          console.log(response);
           translatedText.value = response.data.translatedText;
           await loadHistory();
         } catch (err) {

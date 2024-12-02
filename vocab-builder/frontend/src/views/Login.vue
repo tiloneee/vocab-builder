@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-md mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login</h2>
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Sign In</h2>
     <form @submit.prevent="handleLogin">
       <!-- Email Field -->
       <div class="mb-4">
@@ -32,7 +32,7 @@
           type="submit"
           class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
-          Login
+          Sign In
         </button>
         <router-link
           to="/register"

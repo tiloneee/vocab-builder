@@ -59,7 +59,7 @@
     </div>
 
     <!-- Navbar for non-logged-in users -->
-    <div v-else class="bg-gray-800 text-white py-4">
+    <div v-else class="bg-gray-800 text-white py-4 font-medium">
       <div class="container mx-auto flex items-center">
         <!-- Left: Logo -->
         <router-link to="/" class="flex items-center text-gray-200 hover:text-white space-x-2 flex-none">
@@ -78,7 +78,7 @@
         <div class="flex-none">
           <router-link to="/login" class="flex items-center space-x-2 text-gray-200 hover:text-white">
             <i class="sign-in-icon"></i>
-            <span>Login</span>
+            <span>Sign In</span>
           </router-link>
         </div>
       </div>

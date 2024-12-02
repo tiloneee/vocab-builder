@@ -1,9 +1,9 @@
 <template>
-    <div>
-      <h1>Test</h1>
+    <div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+      <h1 class="text-3xl font-semibold mb-6 text-center">Test</h1>
   
       <div v-if="words.length < 5">
-        <p>You need to enter at least five words to begin the test</p>
+        <p class="text-center text-xl font-medium text-red-700">You need to enter at least five words to begin the test</p>
       </div>
       <div v-else>
         <vocab-test :words="words"></vocab-test>
