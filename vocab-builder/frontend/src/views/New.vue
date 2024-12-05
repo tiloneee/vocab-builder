@@ -30,13 +30,11 @@ export default {
   methods: {
     async translateWord(sourceLang, text) {
       try {
-        // Define the target languages dynamically
         const targets = ['en', 'de', 'vi'].filter(lang => lang !== sourceLang);
 
-        // Translate for each target language
         for (const targetLang of targets) {
           const response = await translateAPI.translate(text, sourceLang, targetLang);
-          // Update the corresponding field in the word object
+          console.log(response, "response");
           if (targetLang === 'en') this.word.english = response.data.translatedText;
           if (targetLang === 'de') this.word.german = response.data.translatedText;
           if (targetLang === 'vi') this.word.vietnamese = response.data.translatedText;
@@ -48,12 +46,9 @@ export default {
     },
     async createOrUpdate(word) {
       try {
-        // Determine which field is filled and translate the rest
         if (word.english) await this.translateWord('en', word.english);
         else if (word.german) await this.translateWord('de', word.german);
         else if (word.vietnamese) await this.translateWord('vi', word.vietnamese);
-
-        // Submit the word after translation
         const response = await api.createWord(this.word);
         this.$toast.success('Word created successfully!', 'success');
         this.$router.push(`/words/${response._id}`);

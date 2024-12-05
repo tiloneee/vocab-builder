@@ -24,8 +24,23 @@
         </div>
         <input 
           type="text" 
-          placeholder="Enter word..." 
+          placeholder="Enter English word..." 
           v-model="english" 
+          :disabled="testOver" 
+          autocomplete="off" 
+          class="w-full border border-gray-300 rounded-r-md px-4 py-2 focus:ring focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>
+
+      <!-- Vietnamese Input -->
+      <div class="flex items-center">
+        <div class="bg-gray-200 text-gray-800 px-4 py-2 rounded-l-md">
+          <i class="fi fi-vn text-lg"></i> Vietnamese
+        </div>
+        <input 
+          type="text" 
+          placeholder="Enter Vietnamese word..." 
+          v-model="vietnamese" 
           :disabled="testOver" 
           autocomplete="off" 
           class="w-full border border-gray-300 rounded-r-md px-4 py-2 focus:ring focus:ring-blue-500 focus:border-blue-500"
@@ -41,7 +56,10 @@
       </button>
     </form>
 
-
+    <!-- Results Display -->
+    <div v-if="testOver" class="results">
+      <p :class="resultClass" v-html="result"></p>
+    </div>
   </div>
 </template>
 
@@ -61,6 +79,7 @@ export default {
       result: '',
       resultClass: '',
       english: '',
+      vietnamese: '',
       score: 0,
       testOver: false
     };
@@ -72,15 +91,18 @@ export default {
   },
   methods: {
     onSubmit: function () {
-      if (this.english === this.currWord.english) {
+      const isEnglishCorrect = this.english.trim() ==  this.currWord.english.trim();
+      const isVietnameseCorrect = this.vietnamese.trim() == this.currWord.vietnamese.trim();
+
+      if (isEnglishCorrect && isVietnameseCorrect) {
         this.$toast.success('Correct!', 'success', { timeout: 1000 });
         this.score += 1;
       } else {
         this.$toast.error('Wrong!', 'error', { timeout: 1000 });
         this.incorrectGuesses.push(this.currWord.german);
       }
-
       this.english = '';
+      this.vietnamese = '';
       this.randWords.shift();
 
       if (this.randWords.length === 0) {
@@ -105,5 +127,11 @@ export default {
 <style scoped>
 .results {
   margin-top: 1.5rem;
+}
+.success {
+  color: green;
+}
+.error {
+  color: red;
 }
 </style>
