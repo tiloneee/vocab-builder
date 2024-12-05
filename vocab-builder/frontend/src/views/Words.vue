@@ -6,6 +6,7 @@
           <tr class="bg-gray-100">
             <th class="border border-gray-300 px-4 py-2 text-left">English</th>
             <th class="border border-gray-300 px-4 py-2 text-left">German</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Vietnamese</th>
             <th :colspan="isLoggedIn ? 3 : 1" class="border border-gray-300 px-4 py-2"></th>
           </tr>
         </thead>
@@ -17,6 +18,7 @@
           >
             <td class="border border-gray-300 px-4 py-2">{{ word.english }}</td>
             <td class="border border-gray-300 px-4 py-2">{{ word.german }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ word.vietnamese }}</td>
             <td class="border border-gray-300 px-4 py-2 text-center">
               <router-link
                 :to="{ name: 'show', params: { wordId: word._id }}"

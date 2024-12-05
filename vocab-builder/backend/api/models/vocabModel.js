@@ -12,6 +12,10 @@ const VocabSchema = new mongoose.Schema(
             type: String,
             required: 'Enter the German translation',
         },
+        vietnamese: {
+            type: String,
+            required: 'Enter the Vietnamese translation',
+        }
     },
     {
         collection: 'vocab',

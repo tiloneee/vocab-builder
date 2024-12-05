@@ -9,11 +9,17 @@
           </div>
           <input type="text" readonly :value="word.german" class="flex-1 border-gray-300 border rounded-lg p-2" />
         </div>
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-4 mb-4">
           <div class="w-24 h-12 border border-2 rounded-lg flex items-center justify-center">
             <p class="text-xl">English</p>
           </div>
           <input type="text" readonly :value="word.english" class="flex-1 border-gray-300 border rounded-lg p-2" />
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="w-36 h-12 border border-2 rounded-lg flex items-center justify-center">
+            <p class="text-xl">Vietnamese</p>
+          </div>
+          <input type="text" readonly :value="word.vietnamese" class="flex-1 border-gray-300 border rounded-lg p-2" />
         </div>
       </div>
   
